@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapido Captain's Cockpit - Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS STYLES */
+        :root {
+            --rapido-yellow: #FFC107;
+            --dark-text: #212121;
+            --light-text: #757575;
+            --background: #f5f5f5;
+            --white: #FFFFFF;
+            --red-demand: #F44336;
+            --yellow-demand: #FFEB3B;
+            --green-confirm: #4CAF50;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .app-container {
+            width: 375px;
+            height: 812px;
+            background-color: var(--background);
+            border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #111;
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen:not(.active) {
+            transform: translateX(100%);
+        }
+        #cockpit-dashboard.active {
+            transform: translateX(0);
+        }
+
+        header {
+            padding: 20px 20px 10px 20px;
+            background-color: var(--white);
+            border-bottom: 1px solid #e0e0e0;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 24px;
+            color: var(--dark-text);
+            margin: 0;
+        }
+        header p {
+            font-size: 14px;
+            color: var(--light-text);
+            margin: 4px 0 0 0;
+        }
+
+        main {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+        .menu-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .menu-item.disabled {
+            cursor: not-allowed;
+            background-color: #f9f9f9;
+        }
+        .menu-item .icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        .menu-item .text-content h3 {
+            margin: 0 0 5px 0;
+            color: var(--dark-text);
+        }
+        .menu-item .text-content p {
+            margin: 0;
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 25px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-text);
+        }
+
+        .map-placeholder {
+            height: 150px;
+            background-color: #e9e9e9;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--light-text);
+            font-weight: 500;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .heatmap-dot {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.4;
+            filter: blur(15px);
+        }
+        .heatmap-dot.red { background-color: var(--red-demand); width: 120px; height: 120px; }
+        .heatmap-dot.yellow { background-color: var(--yellow-demand); width: 90px; height: 90px; }
+
+        #zone-list h4 {
+            margin: 0 0 10px 0;
+            color: var(--dark-text);
+        }
+        .zone-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+        }
+        .zone-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        .zone-info p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--light-text);
+        }
+        .demand-tag {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 6px;
+            border-radius: 5px;
+            color: var(--dark-text);
+        }
+        .demand-tag.red { background-color: var(--red-demand); color: var(--white); }
+        .demand-tag.yellow { background-color: var(--yellow-demand); }
+
+        .commit-btn {
+            background-color: var(--rapido-yellow);
+            color: var(--dark-text);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .commit-btn:hover {
+            background-color: #ffca28;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s;
+            z-index: 20;
+        }
+        .modal-content {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 85%;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        .modal-overlay:not(.hidden) .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal-icon {
+            font-size: 48px;
+        }
+        .modal-content h2 {
+            margin: 15px 0 10px 0;
+            color: var(--dark-text);
+        }
+        .modal-content p {
+            margin: 0 0 25px 0;
+            color: var(--light-text);
+            line-height: 1.5;
+        }
+        .btn-primary {
+            background-color: var(--green-confirm);
+            color: var(--white);
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Banner Styles */
+        #active-commitment-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--green-confirm);
+            color: var(--white);
+            text-align: center;
+            padding: 10px;
+            z-index: 10;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #active-commitment-banner.visible {
+            transform: translateY(0);
+        }
+        #active-commitment-banner p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HTML BODY STRUCTURE -->
+    <div class="app-container">
+        <div id="active-commitment-banner" class="hidden">
+            <p><strong>Active: Koramangala Power-Play</strong> until 7:00 PM</p>
+        </div>
+
+        <div id="cockpit-dashboard" class="screen active">
+            <header>
+                <h1>Captain's Cockpit</h1>
+                <p>Your hub for strategic earnings.</p>
+            </header>
+            <main>
+                <button class="menu-item disabled">
+                    <span class="icon">→</span>
+                    <div class="text-content">
+                        <h3>Forward Dispatch</h3>
+                        <p>Set a destination for your rides (Coming Soon)</p>
+                    </div>
+                </button>
+                <button id="goToPowerPlayBtn" class="menu-item">
+                    <span class="icon">🎯</span>
+                    <div class="text-content">
+                        <h3>Zone Power-Play</h3>
+                        <p>Commit to a high-demand zone for higher rewards.</p>
+                    </div>
+                </button>
+            </main>
+        </div>
+
+        <div id="power-play-screen" class="screen">
+            <header>
+                <button id="backToCockpitBtn" class="back-btn">←</button>
+                <h1>Zone Power-Play</h1>
+            </header>
+            <main>
+                <div class="map-placeholder">
+                    <div class="heatmap-dot red" style="top: 40%; left: 50%;"></div>
+                    <div class="heatmap-dot red" style="top: 60%; left: 65%;"></div>
+                    <div class="heatmap-dot yellow" style="top: 20%; left: 30%;"></div>
+                    <p>Live Demand Heatmap</p>
+                </div>
+                <div id="zone-list">
+                    <h4>Commit to a Zone:</h4>
+                    <div class="zone-card">
+                        <div class="zone-info">
+                            <h3>Koramangala <span class="demand-tag red">Very High</span></h3>
+                            <p>Commit for 1 Hour | Priority Matching + 1.5% Rebate</p>
+                        </div>
+                        <button class="commit-btn" data-zone="Koramangala" data-time="7:00 PM">Commit Now</button>
+                    </div>
+                    <div class="zone-card">
+                        <div class="zone-info">
+                            <h3>Indiranagar <span class="demand-tag red">Very High</span></h3>
+                            <p>Commit for 1 Hour | Priority Matching + 1.5% Rebate</p>
+                        </div>
+                        <button class="commit-btn" data-zone="Indiranagar" data-time="7:00 PM">Commit Now</button>
+                    </div>
+                     <div class="zone-card">
+                        <div class="zone-info">
+                            <h3>HSR Layout <span class="demand-tag yellow">High</span></h3>
+                            <p>Commit for 1 Hour | Priority Matching + 1.0% Rebate</p>
+                        </div>
+                        <button class="commit-btn" data-zone="HSR Layout" data-time="7:00 PM">Commit Now</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <span class="modal-icon">✅</span>
+            <h2>Confirmed!</h2>
+            <p id="modal-text">You are committed to the Koramangala zone until 7:00 PM. Your priority matching is now active.</p>
+            <button id="closeModalBtn" class="btn-primary">OK, Let's Ride!</button>
+        </div>
+    </div>
+    
+    <script>
+        // JAVASCRIPT LOGIC
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Select all the elements we need to interact with
+            const cockpitDashboard = document.getElementById('cockpit-dashboard');
+            const powerPlayScreen = document.getElementById('power-play-screen');
+            
+            const goToPowerPlayBtn = document.getElementById('goToPowerPlayBtn');
+            const backToCockpitBtn = document.getElementById('backToCockpitBtn');
+            
+            const zoneList = document.getElementById('zone-list');
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const modalText = document.getElementById('modal-text');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const activeCommitmentBanner = document.getElementById('active-commitment-banner');
+
+            // --- Navigation Functions ---
+
+            // Go from Cockpit Dashboard to Power-Play screen
+            goToPowerPlayBtn.addEventListener('click', () => {
+                cockpitDashboard.classList.remove('active');
+                powerPlayScreen.classList.add('active');
+            });
+
+            // Go back from Power-Play to Cockpit Dashboard
+            backToCockpitBtn.addEventListener('click', () => {
+                powerPlayScreen.classList.remove('active');
+                cockpitDashboard.classList.add('active');
+            });
+
+            // --- Modal and Commitment Logic ---
+
+            // Listen for clicks on any "Commit Now" button
+            zoneList.addEventListener('click', (event) => {
+                if (event.target.classList.contains('commit-btn')) {
+                    const button = event.target;
+                    const zone = button.dataset.zone;
+                    const time = button.dataset.time;
+
+                    // Update the modal's text with the specific zone info
+                    modalText.textContent = `You are committed to the ${zone} zone until ${time}. Your priority matching is now active.`;
+                    
+                    // Show the confirmation modal
+                    confirmationModal.classList.remove('hidden');
+                    confirmationModal.style.display = 'flex'; // Ensure it's visible
+                }
+            });
+
+            // Close the modal and finalize the commitment
+            closeModalBtn.addEventListener('click', () => {
+                // Hide the modal
+                confirmationModal.classList.add('hidden');
+                confirmationModal.style.display = 'none';
+                
+                // Update and show the top banner
+                const bannerText = activeCommitmentBanner.querySelector('p strong');
+                // Extract zone name from the modal text to update the banner correctly
+                const committedZone = modalText.textContent.match(/to the (.*?) zone/)[1];
+                bannerText.textContent = `Active: ${committedZone} Power-Play`;
+                
+                activeCommitmentBanner.classList.remove('hidden');
+                activeCommitmentBanner.classList.add('visible');
+                
+
+                // Go back to the main dashboard screen
+                powerPlayScreen.classList.remove('active');
+                cockpitDashboard.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
