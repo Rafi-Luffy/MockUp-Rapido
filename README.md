@@ -4,7 +4,7 @@ A modern, interactive prototype of Rapido's Captain's Cockpit interface, designe
 
 ## 🚀 Live Demo
 
-Visit the live demo: [https://rafi0x.github.io/MockUp-Rapido/](https://rafi0x.github.io/MockUp-Rapido/)
+Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-luffy.github.io/MockUp-Rapido/)
 
 ## 📱 Features
 
@@ -56,7 +56,7 @@ Visit the live demo: [https://rafi0x.github.io/MockUp-Rapido/](https://rafi0x.gi
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/rafi0x/MockUp-Rapido.git
+   git clone https://github.com/Rafi-Luffy/MockUp-Rapido.git
    ```
 
 2. Open `index.html` in your browser or serve it locally:
