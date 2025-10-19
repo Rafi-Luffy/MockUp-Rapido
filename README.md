@@ -2,11 +2,11 @@
 
 A modern, interactive prototype of Rapido's Captain's Cockpit interface, designed to help drivers maximize their earnings through strategic zone commitments.
 
-## 🚀 Live Demo
+##  Live Demo
 
 Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-luffy.github.io/MockUp-Rapido/)
 
-## 📱 Features
+##  Features
 
 - **Captain's Cockpit Dashboard** - Main hub for strategic earnings
 - **Zone Power-Play** - Commit to high-demand zones for better rewards
@@ -14,7 +14,7 @@ Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-
 - **Priority Matching** - Enhanced ride allocation system
 - **Responsive Mobile Design** - Optimized for mobile devices
 
-## 🎯 Key Functionality
+##  Key Functionality
 
 ### Zone Power-Play System
 - View real-time demand heatmap
@@ -28,7 +28,7 @@ Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-
 - Active commitment tracking banner
 - Modern Material Design inspired UI
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **HTML5** - Semantic structure
 - **CSS3** - Modern styling with CSS variables and animations
@@ -36,7 +36,7 @@ Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-
 - **Google Fonts** - Roboto typography
 - **Responsive Design** - Mobile-first approach
 
-## 🎨 Design Features
+##  Design Features
 
 - Rapido brand colors and styling
 - iPhone-like container design
@@ -44,7 +44,7 @@ Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-
 - Intuitive navigation patterns
 - Visual demand indicators (heatmap dots)
 
-## 📋 Project Structure
+##  Project Structure
 
 ```
 ├── index.html          # Main application file
@@ -52,7 +52,7 @@ Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-
 └── README.md          # Project documentation
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 1. Clone the repository:
    ```bash
@@ -70,14 +70,14 @@ Visit the live demo: [https://rafi-luffy.github.io/MockUp-Rapido/](https://rafi-
 
 3. Navigate to `http://localhost:8000` to view the mockup
 
-## 💡 Usage
+##  Usage
 
 1. **Main Dashboard**: Start at the Captain's Cockpit with available features
 2. **Zone Power-Play**: Click to view high-demand zones
 3. **Commit to Zone**: Select a zone and commit for enhanced rewards
 4. **Track Activity**: View active commitments in the top banner
 
-## 🔧 Customization
+##  Customization
 
 The design uses CSS custom properties for easy theming:
 
@@ -94,14 +94,14 @@ The design uses CSS custom properties for easy theming:
 }
 ```
 
-## 📱 Browser Support
+##  Browser Support
 
 - Chrome 60+
 - Firefox 60+
 - Safari 12+
 - Edge 79+
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -109,11 +109,11 @@ The design uses CSS custom properties for easy theming:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+##  License
 
 This project is for demonstration purposes. All rights reserved.
 
-## 👨‍💻 Author
+## Author
 
 Created as a prototype solution for Rapido's Captain interface enhancement.
 
